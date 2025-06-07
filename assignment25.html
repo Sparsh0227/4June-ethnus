@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registration Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: white;
+        padding: 30px;
+      }
+
+      h2 {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      form {
+        width: 420px;
+        margin: auto;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      td {
+        padding: 6px;
+        vertical-align: top;
+      }
+
+      label {
+        font-family: Georgia, serif;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+      }
+
+      /* Red border on error */
+      .error-border {
+        border: 2px solid red !important;
+      }
+
+      /* Error message */
+      .error-text {
+        color: red;
+        font-family: Georgia, serif;
+        font-size: 14px;
+      }
+
+      input[type="submit"] {
+        padding: 5px 14px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Registration Form</h2>
+
+    <form id="registrationForm" novalidate>
+      <table>
+        <tr>
+          <td><label for="name">Name:</label></td>
+          <td>
+            <input type="text" id="name" />
+          </td>
+          <td><span class="error-text" id="nameError"></span></td>
+        </tr>
+        <tr>
+          <td><label for="email">Email:</label></td>
+          <td>
+            <input type="text" id="email" />
+          </td>
+          <td><span class="error-text" id="emailError"></span></td>
+        </tr>
+        <tr>
+          <td><label for="website">Website:</label></td>
+          <td>
+            <input type="text" id="website" />
+          </td>
+          <td><span class="error-text" id="websiteError"></span></td>
+        </tr>
+        <tr>
+          <td><label for="message">Message:</label></td>
+          <td>
+            <textarea id="message" rows="4"></textarea>
+          </td>
+          <td><span class="error-text" id="messageError"></span></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="submit" value="Submit" /></td>
+        </tr>
+      </table>
+    </form>
+
+    <script>
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Clear previous errors
+          const fields = ["name", "email", "website", "message"];
+          fields.forEach((id) => {
+            document.getElementById(id).classList.remove("error-border");
+            document.getElementById(id + "Error").textContent = "";
+          });
+
+          let isValid = true;
+
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const website = document.getElementById("website").value.trim();
+          const message = document.getElementById("message").value.trim();
+
+          // Name validation
+          if (name === "") {
+            setError("name", "This field is required");
+            isValid = false;
+          }
+
+          // Email validation
+          const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+          if (!emailRegex.test(email)) {
+            setError("email", "A valid email address is required");
+            isValid = false;
+          }
+
+          // Website validation
+          try {
+            new URL(website);
+          } catch {
+            setError("website", "A valid url is required");
+            isValid = false;
+          }
+
+          // Message validation
+          if (message === "") {
+            setError("message", "This field is required");
+            isValid = false;
+          }
+
+          if (isValid) {
+            alert("Form submitted successfully!");
+          }
+
+          function setError(fieldId, message) {
+            document.getElementById(fieldId).classList.add("error-border");
+            document.getElementById(fieldId + "Error").textContent = message;
+          }
+        });
+    </script>
+  </body>
+</html>
